@@ -1,0 +1,25 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: xxlJobAuto
+xxl:
+  job:
+    accessToken: pass@bingocloud1
+    admin:
+      addresses: http://jobserver:9559/xxl-job-admin
+      # 以下admin配置为自动注册自定义新增配置项，必须项
+      username: admin                         #admin 用户名
+      password: Xxljob@xxl#1015               #admin 密码
+    enabled: false
+    executor:
+      appname: ${spring.application.name}
+      ip:
+      address:
+      logpath: /apps/logs/${spring.application.name}/jobhandler
+      logretentiondays: 3
+      port: 0
+      # 以下executor配置为自动注册自定义新增配置项，可选
+      addressList:    #在addressType为1的情况下，手动录入执行器地址列表，多地址逗号分隔
+      addressType: 0      #执行器地址类型：0=自动注册、1=手动录入，默认为0
+      title: ${spring.application.name}    #执行器名称
