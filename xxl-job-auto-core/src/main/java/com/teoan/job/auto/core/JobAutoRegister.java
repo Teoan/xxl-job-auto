@@ -51,20 +51,26 @@ public class JobAutoRegister {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        // 注册执行器
-        addJobGroup();
+        // 注册执行器 失败直接返回
+        if(!addJobGroup()) {
+            return;
+        }
         // 注册任务
         addJobInfo();
-        log.info(">>>>>>>>>>> xxl-job auto register enable");
+        log.info(">>>>>>>>>>> xxl-job auto register success");
     }
 
     //自动注册执行器
-    private void addJobGroup() {
+    private Boolean addJobGroup() {
         if (jobGroupService.preciselyCheck())
-            return;
+            return true;
 
-        if (jobGroupService.autoRegisterGroup())
+        if (jobGroupService.autoRegisterGroup()){
             log.info(">>>>>>>>>>> xxl-job auto register group success!");
+        }else {
+            return false;
+        }
+        return true;
     }
 
     private void addJobInfo() {

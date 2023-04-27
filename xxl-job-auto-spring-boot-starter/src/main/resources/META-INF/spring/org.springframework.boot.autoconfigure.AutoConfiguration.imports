@@ -1,0 +1,2 @@
+com.teoan.job.auto.autoconfigure.XxlJobAutoConfiguration
+com.teoan.job.auto.autoconfigure.SchedulingAutoConfiguration

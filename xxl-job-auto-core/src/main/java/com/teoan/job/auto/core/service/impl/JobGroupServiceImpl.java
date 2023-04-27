@@ -10,6 +10,7 @@ import com.teoan.job.auto.core.model.XxlJobGroup;
 import com.teoan.job.auto.core.service.JobGroupService;
 import com.teoan.job.auto.core.service.JobLoginService;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @description: 执行器任务处理实现类
  */
 @Service
+@Slf4j
 public class JobGroupServiceImpl implements JobGroupService {
 
     @Value("${xxl.job.admin.addresses}")
@@ -85,7 +87,11 @@ public class JobGroupServiceImpl implements JobGroupService {
         HttpResponse response = httpRequest.cookie(jobLoginService.getCookie())
                 .execute();
         Object code = JSONUtil.parse(response.body()).getByPath("code");
-        return code.equals(200);
+        if(!code.equals(200)){
+            log.error(">>>>>>>>>>> xxl-job auto register group fail!msg[{}]",JSONUtil.parse(response.body()).getByPath("msg"));
+            return false;
+        }
+        return true;
     }
 
     @Override
