@@ -17,12 +17,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,8 +48,10 @@ public class JobAutoRegister {
 
     /**
      * 监听事件实现自动注册逻辑
+     * 不影响主线程序启动速度，使用异步执行
      */
     @EventListener(ApplicationReadyEvent.class)
+    @Async
     public void onApplicationEvent(ApplicationReadyEvent event) {
         // 注册执行器 失败直接返回
         if(!addJobGroup()) {
@@ -76,9 +78,8 @@ public class JobAutoRegister {
     private void addJobInfo() {
         List<XxlJobGroup> jobGroups = jobGroupService.getJobGroup();
         XxlJobGroup xxlJobGroup = jobGroups.get(0);
-        String[] beanDefinitionNames = applicationContext.getBeanNamesForType(Object.class, false, true);
-        Arrays.stream(beanDefinitionNames).forEach(beanName -> {
-            Object bean = applicationContext.getBean(beanName);
+        List<Object> beanList = applicationContext.getBeansWithAnnotation(Component.class).values().stream().toList();
+        beanList.forEach(bean -> {
             Map<Method, Scheduled> annotatedMethods = MethodIntrospector.selectMethods(bean.getClass(),
                     (MethodIntrospector.MetadataLookup<Scheduled>) method -> AnnotatedElementUtils.findMergedAnnotation(method, Scheduled.class));
             annotatedMethods.forEach((k, v) -> {
@@ -149,7 +150,7 @@ public class JobAutoRegister {
     private void stopScheduled(Class<?> clazz) {
         ScheduledAnnotationBeanPostProcessor processor = (ScheduledAnnotationBeanPostProcessor) applicationContext
                 .getBean("org.springframework.context.annotation.internalScheduledAnnotationProcessor");
-        processor.postProcessBeforeDestruction(applicationContext.getBean(clazz), null);
+        processor.postProcessBeforeDestruction(applicationContext.getBean(clazz), "");
     }
 
 
