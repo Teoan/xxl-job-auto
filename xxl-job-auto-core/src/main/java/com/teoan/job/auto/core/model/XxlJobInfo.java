@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * @author: Teoan
- * @createTime: 2023/04/07 14:17
- * @description: 任务信息实体类(来自xxl-job源码)
+ * @author Teoan
+ * @description 任务信息实体类(来自xxl - job源码)
+ * @since 2023/04/07 14:17
  */
 @Data
 @Builder

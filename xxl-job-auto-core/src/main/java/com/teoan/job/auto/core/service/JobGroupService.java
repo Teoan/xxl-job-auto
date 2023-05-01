@@ -6,9 +6,9 @@ import com.teoan.job.auto.core.model.XxlJobGroup;
 import java.util.List;
 
 /**
- * @author: Teoan
- * @createTime: 2023/04/07 14:17
- * @description: 执行器任务处理服务类
+ * @author Teoan
+ * @description 执行器任务处理服务类
+ * @since 2023/04/07 14:17
  */
 public interface JobGroupService {
 

@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @author: Teoan
- * @createTime: 2023/04/07 14:49
- * @description: xxl-job任务登陆操作实现类
+ * @author Teoan
+ * @description xxl-job任务登陆操作实现类
+ * @since 2023/04/07 14:49
  */
 @Service
 public class JobLoginServiceImpl implements JobLoginService {

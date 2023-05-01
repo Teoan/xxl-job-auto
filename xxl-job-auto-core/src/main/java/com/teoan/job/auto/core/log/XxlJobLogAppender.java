@@ -8,9 +8,9 @@ import com.xxl.job.core.context.XxlJobHelper;
 import org.springframework.stereotype.Component;
 
 /**
- * @author: Teoan
- * @createTime: 2023/04/11 15:17
- * @description: 处理日志事件
+ * @author Teoan
+ * @description 处理日志事件
+ * @since 2023/04/11 15:17
  */
 @Component
 public class XxlJobLogAppender extends AppenderBase<ILoggingEvent> {

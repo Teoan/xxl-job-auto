@@ -28,9 +28,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @author: Teoan
- * @createTime: 2023/04/07 15:57
- * @description: xxl-job 自动注册实现
+ * @author Teoan
+ * @description xxl-job 自动注册实现
+ * @since 2023/04/07 15:57
  */
 @Component
 @Slf4j

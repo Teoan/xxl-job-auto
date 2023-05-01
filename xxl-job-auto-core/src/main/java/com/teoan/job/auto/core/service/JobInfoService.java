@@ -6,9 +6,9 @@ import com.teoan.job.auto.core.model.XxlJobInfo;
 import java.util.List;
 
 /**
- * @author: Teoan
- * @createTime: 2023/04/07 14:27
- * @description: 任务信息操作服务类
+ * @author Teoan
+ * @description 任务信息操作服务类
+ * @since 2023/04/07 14:27
  */
 public interface JobInfoService {
 
