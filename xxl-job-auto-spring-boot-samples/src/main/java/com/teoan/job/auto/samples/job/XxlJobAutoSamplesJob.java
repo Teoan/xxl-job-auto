@@ -12,8 +12,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class XxlJobAutoSamplesJob {
 
+    /**
+     * 固定速度(FIX_RATE)
+     */
     @Scheduled(fixedRate = 10000)
-    public void samplesJob(){
-        log.info("samplesJob executor success!");
+    public void fixedRateJob() {
+        log.info("fixedRateJob executor success!");
     }
+
+
+    /**
+     * CORN
+     */
+    @Scheduled(cron = "0/10 * * * * ?")
+    public void cronJob() {
+        log.info("cronJob executor success!");
+    }
+
+
 }

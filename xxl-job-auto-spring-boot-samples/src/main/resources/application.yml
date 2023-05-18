@@ -7,17 +7,17 @@ xxl:
   job:
     # 自动注册自定义新增配置项 是否使用Xxl实现定时任务
     enable: true
-    accessToken: pass@bingocloud1
+    accessToken:
     admin:
-      addresses: http://jobserver:9559/xxl-job-admin
+      addresses: http://localhost:8090/xxl-job-admin
       # 以下admin配置为自动注册自定义新增配置项，必须项
       username: admin                         #admin 用户名
-      password: Xxljob@xxl#1015               #admin 密码
+      password: 123456                        #admin 密码
     executor:
       appname: ${spring.application.name}
       ip:
       address:
-      logpath: /apps/logs/${spring.application.name}/jobhandler
+      logpath: ./jobhandler
       logretentiondays: 3
       port: 0
       # 以下executor配置为自动注册自定义新增配置项，可选
