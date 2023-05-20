@@ -16,9 +16,9 @@
     <version>${xxl-job.version}</version>
 </dependency>
 <dependency>
-<groupId>com.teoan</groupId>
-<artifactId>xxl-job-auto-spring-boot-starter</artifactId>
-<version>${project.version}</version>
+    <groupId>com.teoan</groupId>
+    <artifactId>xxl-job-auto-spring-boot-starter</artifactId>
+    <version>${project.version}</version>
 </dependency>
 ```
 
