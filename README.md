@@ -205,10 +205,7 @@ public class XxlJobAutoSamplesJob {
 ```
 
 日志看起来没啥问题，注册执行器和注册任务信息的相关日志都打印了出来，定时任务的执行日志也有了。我们上调度中心看看。
-![执行器管理列表](https://github.com/Teoan/xxl-job-auto/row/develop/doc/images/119650416278778.png)
-
-![执行器任务列表](https://github.com/Teoan/xxl-job-auto/row/develop/doc/images/267333194899548.png)
-
-![任务执行日志](https://github.com/Teoan/xxl-job-auto/row/develop/doc/images/514241523586190.png)
-
+![执行器管理列表](https://github.com/Teoan/xxl-job-auto/blob/develop/doc/images/119650416278778.png?raw=true)
+![执行器任务列表](https://github.com/Teoan/xxl-job-auto/blob/develop/doc/images/267333194899548.png?raw=true)
+![任务执行日志](https://github.com/Teoan/xxl-job-auto/blob/develop/doc/images/514241523586190.png?raw=true)
 执行器和任务详情都自动添加到调度中心了，任务中心的日志也能在调度中心中查看了，开始愉快地使用吧。
