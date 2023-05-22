@@ -8,7 +8,6 @@ import com.teoan.job.auto.core.service.JobGroupService;
 import com.teoan.job.auto.core.service.JobInfoService;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.handler.impl.MethodJobHandler;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +21,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -78,7 +79,7 @@ public class JobAutoRegister {
     private void addJobInfo() {
         List<XxlJobGroup> jobGroups = jobGroupService.getJobGroup();
         XxlJobGroup xxlJobGroup = jobGroups.get(0);
-        List<Object> beanList = applicationContext.getBeansWithAnnotation(Component.class).values().stream().toList();
+        List<Object> beanList = new ArrayList<>(applicationContext.getBeansWithAnnotation(Component.class).values());
         beanList.forEach(bean -> {
             Map<Method, Scheduled> annotatedMethods = MethodIntrospector.selectMethods(bean.getClass(),
                     (MethodIntrospector.MetadataLookup<Scheduled>) method -> AnnotatedElementUtils.findMergedAnnotation(method, Scheduled.class));
