@@ -2,6 +2,9 @@
 
 实现Spring定时任务与XXL-JOB灵活切换
 
+# 注意事项
+2.0版本使用的是SpringBoot3.x版本，仅支持Java17，1.0版本使用SpringBoot2.x版本，支持Java8，Java11，Java15，可根据需要选择对应版本。
+
 ## 使用
 
 ### 在POM文件中引入Starter依赖
