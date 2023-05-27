@@ -6,14 +6,15 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.teoan.job.auto.core.config.XxlJobAutoConfigProperties;
 import com.teoan.job.auto.core.model.XxlJobGroup;
 import com.teoan.job.auto.core.service.JobGroupService;
 import com.teoan.job.auto.core.service.JobLoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
@@ -28,29 +29,40 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JobGroupServiceImpl implements JobGroupService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Resource
+    XxlJobAutoConfigProperties properties;
+
     private String adminAddresses;
 
-    @Value("${xxl.job.executor.appname}")
     private String appName;
 
-    @Value("${xxl.job.executor.title}")
     private String title;
 
     /*
      * 执行器地址类型：0=自动注册、1=手动录入
      * */
-    @Value("${xxl.job.executor.addressType:0}")
     private Integer addressType;
 
     /*
      * 执行器地址列表，多地址逗号分隔(手动录入)
      * */
-    @Value("${xxl.job.executor.addressList:}")
     private String addressList;
 
     @Resource
     private JobLoginService jobLoginService;
+
+
+    /**
+     * 初始化数据
+     */
+    @PostConstruct
+    private void init(){
+        this.adminAddresses=properties.getAdmin().getAddresses();
+        this.appName=properties.getExecutor().getAppname();
+        this.title=properties.getExecutor().getTitle();
+        this.addressType=properties.getExecutor().getAddressType();
+        this.addressList=properties.getExecutor().getAddressList();
+    }
 
     @Override
     public List<XxlJobGroup> getJobGroup() {
