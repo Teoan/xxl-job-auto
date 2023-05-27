@@ -8,12 +8,14 @@ import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.teoan.job.auto.core.config.XxlJobAutoConfigProperties;
 import com.teoan.job.auto.core.model.XxlJobInfo;
 import com.teoan.job.auto.core.service.JobInfoService;
 import com.teoan.job.auto.core.service.JobLoginService;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +31,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JobInfoServiceImpl implements JobInfoService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Resource
+    XxlJobAutoConfigProperties properties;
+
+
     private String adminAddresses;
+
+    @PostConstruct
+    private void init(){
+        this.adminAddresses = properties.getAdmin().getAddresses();
+    }
+
 
     @Autowired
     private JobLoginService jobLoginService;

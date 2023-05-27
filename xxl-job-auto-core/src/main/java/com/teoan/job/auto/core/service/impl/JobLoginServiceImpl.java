@@ -3,8 +3,10 @@ package com.teoan.job.auto.core.service.impl;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.teoan.job.auto.core.config.XxlJobAutoConfigProperties;
 import com.teoan.job.auto.core.service.JobLoginService;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpCookie;
@@ -21,14 +23,25 @@ import java.util.Optional;
 @Service
 public class JobLoginServiceImpl implements JobLoginService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Resource
+    XxlJobAutoConfigProperties properties;
+
     private String adminAddresses;
 
-    @Value("${xxl.job.admin.username}")
+
     private String username;
 
-    @Value("${xxl.job.admin.password}")
     private String password;
+
+
+    @PostConstruct
+    private void init(){
+        this.adminAddresses = properties.getAdmin().getAddresses();
+        this.username = properties.getAdmin().getUsername();
+        this.password = properties.getAdmin().getPassword();
+    }
+
+
 
     /**
      * cookie标识
