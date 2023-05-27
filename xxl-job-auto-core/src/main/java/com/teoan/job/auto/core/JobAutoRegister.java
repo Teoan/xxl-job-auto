@@ -54,26 +54,21 @@ public class JobAutoRegister {
     @EventListener(ApplicationReadyEvent.class)
     @Async
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        // 注册执行器 失败直接返回
-        if(!addJobGroup()) {
-            return;
+        // 注册执行器
+        if(addJobGroup()) {
+            addJobInfo();
+            log.info(">>>>>>>>>>> xxl-job auto register success");
         }
-        // 注册任务
-        addJobInfo();
-        log.info(">>>>>>>>>>> xxl-job auto register success");
     }
 
     //自动注册执行器
     private Boolean addJobGroup() {
-        if (jobGroupService.preciselyCheck())
-            return true;
-
-        if (jobGroupService.autoRegisterGroup()){
+        if (jobGroupService.preciselyCheck()||jobGroupService.autoRegisterGroup())
+        {
             log.info(">>>>>>>>>>> xxl-job auto register group success!");
-        }else {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void addJobInfo() {
