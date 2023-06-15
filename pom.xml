@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.teoan</groupId>
+  <groupId>io.github.teoan</groupId>
   <artifactId>xxl-job-auto</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -28,7 +28,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.github.teoan</groupId>
+        <groupId>io.github.teoan</groupId>
         <artifactId>xxl-job-auto-core</artifactId>
         <version>${project.version}</version>
       </dependency>
