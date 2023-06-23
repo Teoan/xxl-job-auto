@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.github.teoan</groupId>
         <artifactId>xxl-job-auto</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>xxl-job-auto-core</artifactId>
