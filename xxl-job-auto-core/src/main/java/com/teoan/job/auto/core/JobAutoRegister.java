@@ -46,6 +46,9 @@ public class JobAutoRegister {
     @Resource
     private ApplicationContext applicationContext;
 
+    @Resource
+    private ScheduledAnnotationBeanPostProcessor scheduledAnnotationBeanPostProcessor;
+
 
     /**
      * 监听事件实现自动注册逻辑
@@ -54,6 +57,8 @@ public class JobAutoRegister {
     @EventListener(ApplicationReadyEvent.class)
     @Async
     public void onApplicationEvent(ApplicationReadyEvent event) {
+        // 停止Spring自带的定时任务
+        stopScheduled();
         // 注册执行器
         if(addJobGroup()) {
             addJobInfo();
@@ -79,8 +84,7 @@ public class JobAutoRegister {
             Map<Method, Scheduled> annotatedMethods = MethodIntrospector.selectMethods(bean.getClass(),
                     (MethodIntrospector.MetadataLookup<Scheduled>) method -> AnnotatedElementUtils.findMergedAnnotation(method, Scheduled.class));
             annotatedMethods.forEach((k, v) -> {
-                // 停止Spring自带的定时任务
-                stopScheduled(k.getDeclaringClass());
+
                 // 自动注册到xxl-job 暂定Handle名称规则beanName#MethodName
                 String handlerName = StringUtils.joinWith("#", k.getDeclaringClass().getName(), k.getName());
                 // 注册xxl-job的任务
@@ -141,12 +145,10 @@ public class JobAutoRegister {
     /**
      * 停止Spring自带的定时注解
      *
-     * @param clazz 带有定时注解的类
      */
-    private void stopScheduled(Class<?> clazz) {
-        ScheduledAnnotationBeanPostProcessor processor = (ScheduledAnnotationBeanPostProcessor) applicationContext
-                .getBean("org.springframework.context.annotation.internalScheduledAnnotationProcessor");
-        processor.postProcessBeforeDestruction(applicationContext.getBean(clazz), "");
+    private void stopScheduled() {
+        // 销毁所有已注册的scheduled定时任务
+        scheduledAnnotationBeanPostProcessor.destroy();
     }
 
 
