@@ -24,7 +24,7 @@ public class XxlJobAutoSamplesJob {
     /**
      * CORN
      */
-    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0/10 * * * * ? ")
     public void cronJob() {
         log.info("cronJob executor success!");
     }

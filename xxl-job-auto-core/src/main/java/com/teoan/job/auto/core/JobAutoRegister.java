@@ -23,6 +23,7 @@ import org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProc
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,6 +46,9 @@ public class JobAutoRegister {
     @Resource
     private ApplicationContext applicationContext;
 
+    @Resource
+    private ScheduledAnnotationBeanPostProcessor scheduledAnnotationBeanPostProcessor;
+
 
     /**
      * 监听事件实现自动注册逻辑
@@ -53,38 +57,34 @@ public class JobAutoRegister {
     @EventListener(ApplicationReadyEvent.class)
     @Async
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        // 注册执行器 失败直接返回
-        if(!addJobGroup()) {
-            return;
+        // 停止Spring自带的定时任务
+        stopScheduled();
+        // 注册执行器
+        if(addJobGroup()) {
+            addJobInfo();
+            log.info(">>>>>>>>>>> xxl-job auto register success");
         }
-        // 注册任务
-        addJobInfo();
-        log.info(">>>>>>>>>>> xxl-job auto register success");
     }
 
     //自动注册执行器
     private Boolean addJobGroup() {
-        if (jobGroupService.preciselyCheck())
-            return true;
-
-        if (jobGroupService.autoRegisterGroup()){
+        if (jobGroupService.preciselyCheck()||jobGroupService.autoRegisterGroup())
+        {
             log.info(">>>>>>>>>>> xxl-job auto register group success!");
-        }else {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void addJobInfo() {
         List<XxlJobGroup> jobGroups = jobGroupService.getJobGroup();
         XxlJobGroup xxlJobGroup = jobGroups.get(0);
-        List<Object> beanList = applicationContext.getBeansWithAnnotation(Component.class).values().stream().toList();
+        List<Object> beanList = new ArrayList<>(applicationContext.getBeansWithAnnotation(Component.class).values());
         beanList.forEach(bean -> {
             Map<Method, Scheduled> annotatedMethods = MethodIntrospector.selectMethods(bean.getClass(),
                     (MethodIntrospector.MetadataLookup<Scheduled>) method -> AnnotatedElementUtils.findMergedAnnotation(method, Scheduled.class));
             annotatedMethods.forEach((k, v) -> {
-                // 停止Spring自带的定时任务
-                stopScheduled(k.getDeclaringClass());
+
                 // 自动注册到xxl-job 暂定Handle名称规则beanName#MethodName
                 String handlerName = StringUtils.joinWith("#", k.getDeclaringClass().getName(), k.getName());
                 // 注册xxl-job的任务
@@ -145,12 +145,10 @@ public class JobAutoRegister {
     /**
      * 停止Spring自带的定时注解
      *
-     * @param clazz 带有定时注解的类
      */
-    private void stopScheduled(Class<?> clazz) {
-        ScheduledAnnotationBeanPostProcessor processor = (ScheduledAnnotationBeanPostProcessor) applicationContext
-                .getBean("org.springframework.context.annotation.internalScheduledAnnotationProcessor");
-        processor.postProcessBeforeDestruction(applicationContext.getBean(clazz), "");
+    private void stopScheduled() {
+        // 销毁所有已注册的scheduled定时任务
+        scheduledAnnotationBeanPostProcessor.destroy();
     }
 
 
