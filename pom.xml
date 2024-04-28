@@ -4,10 +4,10 @@
 
   <groupId>io.github.teoan</groupId>
   <artifactId>xxl-job-auto</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>pom</packaging>
   <name>xxl-job-auto</name>
-  <url>http://www.powerjob.tech</url>
+  <url>https://github.com/Teoan/xxl-job-auto</url>
   <description>实现Spring定时任务与XXL-JOB灵活切换</description>
   <licenses>
     <license>
